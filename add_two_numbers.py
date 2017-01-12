@@ -12,57 +12,34 @@ class Solution(object):
 		:rtype: ListNode
 		"""
 
-		# Initialize current node to dummy head of the returning list.
-		current = dummy = ListNode(0)
+		# Initialize linked lists
+		current = return_list = ListNode(0)
 
-		# Initialize carry to 0.
+		# Init carry to 0
 		carry = 0
 
-		p = l1
-		q = l2
-		
-		#Loop through lists l1 and l2 until you reach both ends.
+		# Go through both linked lists, l1 and l2
 		while l1 or l2:
-			total = carry
-			if l1:
-				#print "Printing l1: %s " % l1.val
-				#print "Printing l1 total before: %s " % total
+			total = carry # Because if a carry value has occured, need to add 1 to total sum of that column
+			if l1: # Go through l1 as long as it's not NULL
 				total = l1.val + total
-				#print "Printing l1 total after: %s " % total
 				l1 = l1.next
-			if l2:
-				#print "Printing l2: %s " % l2.val
-				#print "Printing l2 total before: %s " % total
+			if l2: #Same as l1 onto l2
 				total = l2.val + total
-				#print "Printing l2 total after: %s " % total
 				l2 = l2.next
-			#print "%%%%%%%%"
-
-			# Update carry = sum / 10.
-			carry = total / 10
-
-			# Create a new node 
-			# This new node is  the digit value of (sum mod 10) and
-			# set it to current node's next
-			current.next = ListNode(total % 10)
-			#print "ListNode %s" % current.val
- 			temp = (total % 10)
-			#print "Total mod 10 : %s " % temp
-			# ... Then advance current node to next.
+			carry = total / 10 # This is to determine if the value was less than 10 (no carry) or greater than 10 (carry)
+			current.next = ListNode(total % 10) #( Total in that column is the mod of the total)
 			current = current.next
-			#print "ListNode AFTER %s" % current.val
-			#print "$$$$$$$$$$$"
 
-		# Check if carry = 1, if so append a new node with 
-		# digit 1 to the returning list.
+		# Compensate for extra carry at end (example 99 + 1 = 100)
 		if carry == 1:
 			current.next = ListNode(1)
-			#print "ListNode AFTER %s" % current.val
-			#print "$$$$$$$$$$$"
-		#print "Dummy.next %s" % dummy.next.val
-		return dummy.next
+			current = current.next
 
-test1, test1.next, test1.next.next = ListNode(2), ListNode(4), ListNode(3)
-test2, test2.next, test2.next.next, test2.next.next.next = ListNode(5), ListNode(6), ListNode(5), ListNode(1)
-output_ll = Solution().addTwoNumbers(test1, test2)
-print "{0} -> {1} -> {2} -> {3}".format(output_ll.val, output_ll.next.val, output_ll.next.next.val, output_ll.next.next.next.val)
+		return return_list.next
+
+
+test1 = ListNode(1)
+test2, test2.next = ListNode(9), ListNode(9)
+return_list = Solution().addTwoNumbers(test1, test2)
+print "{0} -> {1} -> {2}".format(return_list.val, return_list.next.val, return_list.next.next.val)
